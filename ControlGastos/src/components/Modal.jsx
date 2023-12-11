@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alerta from "./Alerta";
+import { generarId } from "../helpers";
 
-function Modal({ setModal }) {
+function Modal({ setModal, gastos, setGastos, gastoEditar, setGastoEditar }) {
   const [nombre, setNombre] = useState("");
   const [cantidad, setCantidad] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -10,7 +11,19 @@ function Modal({ setModal }) {
 
   function ocultarModal() {
     setModal(false);
+
+    if (Object.keys(gastoEditar).length > 0) {
+      setGastoEditar({});
+    }
   }
+
+  useEffect(() => {
+    if (Object.keys(gastoEditar.length > 0)) {
+      setNombre(gastoEditar.nombre);
+      setCantidad(gastoEditar.cantidad);
+      setCategoria(gastoEditar.categoria);
+    }
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -22,10 +35,37 @@ function Modal({ setModal }) {
     setTimeout(() => {
       setError(false);
     }, 3000);
+
+    const fecha = Date.now();
+
+    console.log(gastoEditar);
+
+    setModal(false);
+    if (gastoEditar.id) {
+      const nuevoGasto = {
+        nombre,
+        cantidad: Number(cantidad),
+        categoria,
+        id: gastoEditar.id,
+        fecha: gastoEditar.fecha,
+      };
+
+      const nGastos = gastos.map((gasto) => {
+        return gasto.id === nuevoGasto.id ? nuevoGasto : gasto;
+      });
+
+      setGastos(nGastos);
+      return;
+    }
+
+    setGastos([
+      ...gastos,
+      { nombre, cantidad: Number(cantidad), categoria, id: generarId(), fecha },
+    ]);
   }
 
   return (
-    <div className="absolute top-0 bottom-0 right-0 left-0 bg-black bg-opacity-30 flex justify-center items-center">
+    <div className="absolute top-0 bottom-0 right-0 left-0 bg-black bg-opacity-30 flex justify-center items-center overflow-y-hidden h-[100vh] ">
       <div className="bg-white rounded-2xl p-[2rem] w-[50rem] ">
         <div className="flex justify-end">
           <button
@@ -94,7 +134,11 @@ function Modal({ setModal }) {
           <input
             className=" w-full py-[1rem] hover:cursor-pointer hover:opacity-90 bg-blue-500 text-center font-bold uppercase text-white"
             type="submit"
-            value="Añadir Gastos"
+            value={
+              Object.keys(gastoEditar).length > 0
+                ? "Editar Gasto"
+                : "Añadir Gasto"
+            }
           />
 
           {error && <Alerta mensaje="Todos los campos son obligatorios" />}

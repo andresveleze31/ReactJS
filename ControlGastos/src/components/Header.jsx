@@ -6,6 +6,7 @@ function Header({
   setPresupuesto,
   isValidPresupuesto,
   setIsValidPresupuesto,
+  gastos,
 }) {
   return (
     <div className="flex flex-col items-center">
@@ -14,7 +15,7 @@ function Header({
       </h1>
 
       {isValidPresupuesto ? (
-        <ControlPresupuesto presupuesto={presupuesto} />
+        <ControlPresupuesto presupuesto={presupuesto} gastos={gastos} />
       ) : (
         <NuevoPresupuesto
           presupuesto={presupuesto}

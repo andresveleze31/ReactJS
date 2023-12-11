@@ -10,7 +10,7 @@ function ListadoPacientes({ setPaciente, pacientes, eliminarPaciente }) {
         <span className="text-indigo-600 ">Citas</span>
       </p>
 
-      <div className="h-screen overflow-y-scroll">
+      <div className="h-[80rem] overflow-y-scroll">
         {pacientes.map((paciente) => (
           <Paciente
             key={paciente.id}
