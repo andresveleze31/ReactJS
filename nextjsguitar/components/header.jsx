@@ -54,6 +54,16 @@ function Header() {
           >
             Blog
           </Link>
+          <Link
+            className={
+              router.pathname === "/blog"
+                ? "bg-yellow-500 text-white uppercase font-bold hover:bg-yellow-500 px-[1rem] transition-all duration-200"
+                : "text-white uppercase font-bold hover:bg-yellow-500 px-[1rem] transition-all duration-200"
+            }
+            href="/carrito"
+          >
+            <Image src="/img/carrito.png" width={25} height={25} />
+          </Link>
         </nav>
       </div>
     </header>
