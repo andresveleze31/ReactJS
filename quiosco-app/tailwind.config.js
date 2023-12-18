@@ -20,8 +20,7 @@ module.exports = {
       // => @media (max-width: 639px) { ... }
     },
     fontFamily: {
-      sans: ["Mulish", "sans-serif"],
-      mono: ["Poppins", "monospace"],
+      sans: ["Poppins", "monospace"],
     },
   },
   plugins: [],
