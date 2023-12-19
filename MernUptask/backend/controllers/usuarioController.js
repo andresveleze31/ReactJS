@@ -73,4 +73,71 @@ const confirmar = async (req, res) => {
     
 }
 
-export { registrar, autenticar, confirmar };
+const olvidePassword = async(req, res) => {
+  const {email} = req.body;
+
+  const usuario = await Usuario.findOne({email});
+
+  if(!usuario){
+    const error = new Error("El usuario no existe");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  try {
+    usuario.token = generarId();
+    await usuario.save();
+    return res.json({ msg: "Hemos enviado un email con las instrucciones" });
+
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+const comprobarToken = async(req, res) => {
+  const token = req.params.token;
+
+  const usuario = await Usuario.findOne({token});
+
+  if (!usuario) {
+    const error = new Error("Token no valido");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  res.json({msg: "Token valido"});
+}
+
+const nuevoPassword = async(req, res) => {
+  const token = req.params.token;
+  const {password} = req.body;
+
+  const usuario = await Usuario.findOne({ token });
+
+  if (!usuario) {
+    const error = new Error("Token no valido");
+    return res.status(404).json({ msg: error.message });
+  } else{
+    usuario.password = password;
+    usuario.token = "";
+    usuario.save();
+    res.json({msg: "Password Actualizado"})
+
+  }
+}
+
+const perfil = async(req, res) => {
+
+  console.log("Desde perfil...");
+  res.send("Desde Perfil")
+
+}
+
+export {
+  registrar,
+  nuevoPassword,
+  autenticar,
+  confirmar,
+  olvidePassword,
+  comprobarToken,
+  perfil,
+};
