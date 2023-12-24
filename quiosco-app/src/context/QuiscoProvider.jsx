@@ -126,4 +126,5 @@ function QuioscoProvider({ children }) {
 }
 export { QuioscoProvider };
 
+//Exportar
 export default QuioscoContext;
