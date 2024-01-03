@@ -14,7 +14,7 @@ function RutaProtegida() {
 
     <div className="flex gap-[2rem] ">
         <Sidebar />
-        <main className="py-[5rem] px-[3rem] ">
+        <main className="py-[5rem] px-[3rem] w-full ">
             <Outlet />
         </main>
     </div>
