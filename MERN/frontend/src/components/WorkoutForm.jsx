@@ -1,28 +1,61 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useWorkout from '../hook/useWorkout';
 
 function WorkoutForm() {
 
-  const {workouts, setWorkouts} = useWorkout();
+  const {workouts, setWorkouts, workout} = useWorkout();
 
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
 
+  useEffect(() => {
+    if(Object.keys(workout).length > 0){
+      setTitle(workout.title);
+      setLoad(workout.load);
+      setReps(workout.reps);
+    }
+  }, [workout])
+
   async function handleSubmit(e){
     e.preventDefault();
 
-    try {
-      const {data} = await axios.post(
-        "http://localhost:4000/api/workouts/create", {
+    if(Object.keys(workout).length > 0){
+      const { data } = await axios.put(
+        `http://localhost:4000/api/workouts/${workout._id}`, {
           title, load, reps
+        }
+      );
+
+      const workoutNew = workouts.map(w => {
+        if(w._id == workout._id){
+          w.title = title;
+          w.load = load;
+          w.reps = reps;
+        }
+        return w;
+      })
+
+      console.log(workoutNew);
+
+      setWorkouts(workoutNew);
+    }
+    else{
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/api/workouts/create",
+        {
+          title,
+          load,
+          reps,
         }
       );
       console.log(data);
       setWorkouts([data, ...workouts]);
     } catch (error) {
       console.log(error);
+    }
     }
   }
 
@@ -89,7 +122,7 @@ function WorkoutForm() {
         <input
           className="text-white uppercase bg-green-400 w-full py-[1rem] mt-[1rem] font-bold cursor-pointer "
           type="submit"
-          value={"Add Workout"}
+          value={Object.keys(workout).length > 0 ? "Update" : "Add Workout"}
         />
       </form>
     </div>

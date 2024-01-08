@@ -18,7 +18,7 @@ async function getWorkouts(req, res) {
 async function getWorkout(req, res) {
   const { id } = req.params;
   try {
-    if (!mongooose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Workout not found" });
     }
 

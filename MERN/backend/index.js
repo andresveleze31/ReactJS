@@ -3,13 +3,14 @@ import dotenv from "dotenv"
 import cors from "cors"
 
 import workoutRoutes from "./routes/workoutRoutes.js"
+import userRoutes from "./routes/userRoutes.js";
 import conectarDB from "./config/db.js";
 
 //Express App.
 const app = express();
 
 //Configurar CORS.
-const whiteList = [process.env.FRONT_URL || "http://localhost:5173"];
+const whiteList = [process.env.FRONT_URL || "http://localhost:5173", "http://localhost:4000"];
 const corsOptions = {
     origin: function(origin, callback){
         if(whiteList.includes(origin)){
@@ -34,6 +35,7 @@ conectarDB();
 
 //Routing
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/user", userRoutes);
 
 //Listen for requests.
 app.listen(process.env.PORT, () => {

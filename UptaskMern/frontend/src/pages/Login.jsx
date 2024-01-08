@@ -33,7 +33,6 @@ function Login() {
       );
 
       setAuth(data);
-
       localStorage.setItem('token', data.token);
 
 

@@ -4,8 +4,9 @@ export const WorkoutsContext = createContext();
 
 export const WorkoutProvider = ({ children }) => {
 
-        const [workouts, setWorkouts] = useState([]);
-  return <WorkoutsContext.Provider value={{setWorkouts, workouts
+  const [workouts, setWorkouts] = useState([]);
+  const [workout, setWorkout] = useState({});
+  return <WorkoutsContext.Provider value={{setWorkouts, workouts, workout, setWorkout
 
   }}>{children}</WorkoutsContext.Provider>;
 };
